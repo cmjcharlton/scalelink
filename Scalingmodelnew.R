@@ -1,5 +1,5 @@
 # To run type source('Scalingmodelnew.R')
-# Program for record linkage scaling algorithm. Version 1.0.  October 2016
+# Program for record linkage scaling algorithm. Version 1.1.  January 2017
 #read files from current working directory
 #The files are specified as follows:
 #FOI	Name of File of interest (NFOI x PFOI). NFOI is no. of records
@@ -15,6 +15,9 @@
 # Identifiers should be in same order in each of the two files.
 # If any identifier is missing use the missing value code -9.999e+029    A random replacement for the whole record
 #where this occurs will be used.
+
+library(compiler)
+enableJIT(3)
 
 options(digits=10)
 
@@ -33,6 +36,7 @@ if(NEXISTS==TRUE)
 if(NEXISTS==FALSE)
 {NREPORT<-100}
 
+foo <- function() {
 
 MISSINGVALUE<-(-9.999e+029)
 SIZEFOI<-dim(FOI)
@@ -227,8 +231,12 @@ SCORES<-t(SCORES)
     L=L+1
     }
     }
-   # SCORES<-ENDPOINT_SCORES[1:NCATSTOTAL]
+   
     SCORES<-100*SCORES
+    
+}
+system.time(foo())
+    
     options(digits=3)
     print("Endpoint scores")
     print(SCORES)
