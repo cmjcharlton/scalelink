@@ -1,0 +1,81 @@
+#' Record linkage via scaling algorithm
+#' 
+#' \pkg{Scalelink} is an R command to perform 'probabilistic' linkage of two data files using a scaling procedure.
+#'
+#' With increasing availability of large data sets derived from administrative and other sources, there is an increasing
+#' demand for the successful linking of these to provide rich sources of data for further analysis. Variation in the quality
+#' of identifiers used to carry out linkage means that existing approaches are often based upon 'probabilistic' models, which
+#' are based on a number of assumptions, and can make heavy computational demands. This package implements the method proposed
+#' in Goldstein, H., Harron, K. and Cortina-Borja, M. (2017). In this paper we suggest a new approach to classifying record
+#' pairs in linkage, based upon weights (scores) derived using a scaling algorithm. The proposed method does not rely on 
+#' training data, is computationally fast, requires only moderate amounts of storage and has intuitive appeal.
+#'
+#' @importFrom stats complete.cases
+#' @importFrom utils citation
+#'
+#' @examples
+#' \dontrun{
+#' library(Scalelink)
+#' data(FOI, package = "Scalelink")
+#' data(LDFCOMP, package = "Scalelink")
+#'
+#' idcols <- c("Day", "Month", "Year", "Sex")
+#' result <- calcScores(FOI[, idcols], LDFCOMP[, idcols])
+#'
+#' print(result$scores)
+#'
+#' ## Scalelink package provides two examples using synthetic data
+#' ## one with complete data and one containing missing values
+#'
+#' ## For a list of demo titles
+#' demo(package = 'Scalelink')
+#' 
+#' ## To run a demo
+#' demo(Example1)
+#'
+#' ## Using your own data
+#' ##If you had the following files in your working directory:
+#' ##FOI:
+#' ##A space-delimited file of interest (NFOI x PFOI). NFOI is number of records
+#' ##IDENTIFIERS_FOI:
+#' ##A space-delimited file containing a row vector length PFOI with a 1 where it is an identifier
+#' ##LDF:
+#' ##A space-delimited linking data file (NLDF x PLDF). NLDF is number of records
+#' ##IDENTIFIERS_LDF:
+#' ##A space-delimited file containing a row vector length PLDF with a 1 where it is an identifier
+#' 
+#' ##Then you can calculate scores as follows:
+#' FOI<-read.table("FOI")
+#' LDF<-read.table("LDF")
+#' IDENTIFIERS_FOI<-read.table('IDENTIFIERS_FOI')
+#' IDENTIFIERS_LDF<-read.table('IDENTIFIERS_LDF')
+#' result <- calcScores(FOI[, which(IDENTIFIERS_FOI == 1)], LDF[, which(IDENTIFIERS_LDF == 1)], missing.value=-9.999e+029)
+#'
+#' ##To view the scores:
+#' print(round(result$scores, 2))
+#'
+#' ##To write the A* matrix to a file in the current directory:
+#' write.table(result$astar, file="ASTAR", col.names=FALSE, row.names=FALSE)
+#' }
+#'
+#' @section References:
+#' 
+#' \subsection{Scalelink}{
+#' Goldstein, H., Charlton, C.M.J. (2017) Scalelink: A Package to link data via scaling.
+#' }
+#' 
+#' \subsection{Paper}{
+#' Goldstein, H., Harron, K. and Cortina-Borja, M. (2017). A scaling approach to record linkage. Statistics in Medicine (to appear)
+#' }
+#'
+#' @section Maintainer:
+#' Harvey Goldstein \email{harvey.goldstein@@bristol.ac.uk}
+#'
+#' @author Goldstein H, Charlton, C.M.J. (2017) Centre for Multilevel Modelling, University of Bristol.
+#' 
+#' @docType package
+#' @name Scalelink
+#' @importFrom Rcpp evalCpp
+#' @useDynLib Scalelink
+NULL
+ 
