@@ -3,6 +3,7 @@
 export(buildAstar)
 export(calcScores)
 importFrom(Rcpp,evalCpp)
+importFrom(RcppParallel,RcppParallelLibs)
 importFrom(stats,complete.cases)
 importFrom(utils,citation)
 useDynLib(Scalelink)

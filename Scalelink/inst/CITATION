@@ -1,14 +1,15 @@
 bibentry(bibtype = "Misc",
   title        = "{Scalelink}: A Package to link records via scaling",
-  author       = c(person(given = "Goldstein",
+  author       = c(person(given = c("Christopher", "M.", "J."),
+                          family = "Charlton"),
+                   person(given = "Goldstein",
                           family = "Harvey",
-                          email = "h.goldstein@bristol.ac.uk"),
-                   person(given = c("Christopher", "M.", "J."),
-                          family = "Charlton")),
+                          email = "h.goldstein@bristol.ac.uk")
+                   ),
   year         = "2017",
   header       = "To cite the package in publications use:",
   textVersion  =
-  paste("Goldstein, H., Charlton C.M.J. (2017).",
+  paste("Charlton C.M.J., Goldstein, H. (2017).",
         "Scalelink: A Package to link records via scaling.")
 )
 
@@ -23,12 +24,12 @@ bibentry(bibtype = "Article",
                           family = "Cortina-Borja")),
   journal      = "Statistics in Medicine",
   year         = "2017",
-
+  doi          = "10.1002/sim.7287",
   header       = "To cite the paper in publications use:",
   textVersion  =
   paste("Goldstein, H., Harron, K. and Cortina-Borja, M. (2017).",
         "A scaling approach to record linkage. ",
-        "Statistics in Medicine (to appear)")
+        "Statistics in Medicine. DOI: 10.1002/sim.7287 ")
 )
 
 

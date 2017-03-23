@@ -4,7 +4,7 @@
 \alias{calcScores}
 \title{Calculates linking scores for a file of interest and linkage data file.}
 \usage{
-calcScores(FOI, LDF, missing.value = NA, report.interval = 10,
+calcScores(FOI, LDF, missing.value = NA, min.parallelblocksize = 1,
   output.varnames = NULL, debug = FALSE)
 }
 \arguments{
@@ -18,7 +18,9 @@ only the variables of interest, and these must be in the same order as the FOI.}
 
 \item{missing.value}{Value used to represent missing data; Defaults to NA}
 
-\item{report.interval}{Percentages at which progress is reported; Defaults to 10}
+\item{min.parallelblocksize}{The minimum block size when splitting up the data accross
+processors. You may wish to change this to optimise the allocation of processors.
+see (\url{https://rcppcore.github.io/RcppParallel/#tuning}).}
 
 \item{output.varnames}{Labels to apply to function output; Defaults to column names
 of the FOI \code{\link[base]{data.frame}}}

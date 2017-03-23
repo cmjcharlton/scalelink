@@ -13,7 +13,9 @@
 #'
 #' @param missing.value Value used to represent missing data; Defaults to NA
 #'
-#' @param report.interval Percentages at which progress is reported; Defaults to 10
+#' @param min.parallelblocksize The minimum block size when splitting up the data accross
+#' processors. You may wish to change this to optimise the allocation of processors.
+#' see (\url{https://rcppcore.github.io/RcppParallel/#tuning}).
 #'
 #' @param output.varnames Labels to apply to function output; Defaults to column names
 #' of the FOI \code{\link[base]{data.frame}}
@@ -26,7 +28,7 @@
 #' @author Goldstein H., and Charlton, C.M.J., (2017) Centre for Multilevel Modelling, University of Bristol.
 #' 
 #' @export
-calcScores <- function(FOI, LDF, missing.value=NA, report.interval=10, output.varnames=NULL, debug=FALSE) {
+calcScores <- function(FOI, LDF, missing.value=NA, min.parallelblocksize=1, output.varnames=NULL, debug=FALSE) {
   NFOI <- nrow(FOI)
   NLDF <- nrow(LDF)
   NIDENT <- ncol(FOI)
@@ -49,8 +51,8 @@ calcScores <- function(FOI, LDF, missing.value=NA, report.interval=10, output.va
     stop("Incorrect number of variable names specified in output.varnames")
   }
 
-  if (report.interval < 0 || report.interval > 100) {
-    stop("Invalid percentatge value for report.interval")
+  if (min.parallelblocksize < 0 || min.parallelblocksize > nrow(FOI)) {
+    stop("Invalid value for min.parallelblocksize")
   }
 
   starttime <- proc.time()
@@ -74,7 +76,7 @@ calcScores <- function(FOI, LDF, missing.value=NA, report.interval=10, output.va
   FOImat[!FOICOMP, ] <- FOINEW[sample(nrow(FOINEW), size=(nrow(FOI) - nrow(FOINEW)), replace=TRUE), ]
   
   #  Accumulates matrix values. Note: assumes all identifiers have just 2 categories.
-  ASTAR <- buildAstar(FOImat, LDFmat, report.interval, debug)
+  ASTAR <- buildAstar(FOImat, LDFmat, min.parallelblocksize, debug)
   if (isTRUE(debug)) {
     print("A*:")
     print(ASTAR)

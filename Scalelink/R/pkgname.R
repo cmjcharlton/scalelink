@@ -10,8 +10,6 @@
 #' pairs in linkage, based upon weights (scores) derived using a scaling algorithm. The proposed method does not rely on 
 #' training data, is computationally fast, requires only moderate amounts of storage and has intuitive appeal.
 #'
-#' @importFrom stats complete.cases
-#' @importFrom utils citation
 #'
 #' @examples
 #' \dontrun{
@@ -65,17 +63,21 @@
 #' }
 #' 
 #' \subsection{Paper}{
-#' Goldstein, H., Harron, K. and Cortina-Borja, M. (2017). A scaling approach to record linkage. Statistics in Medicine (to appear)
+#' Goldstein, H., Harron, K. and Cortina-Borja, M. (2017). A scaling approach to record linkage. Statistics in Medicine.
+#' DOI: 10.1002/sim.7287
 #' }
 #'
 #' @section Maintainer:
 #' Harvey Goldstein \email{harvey.goldstein@@bristol.ac.uk}
 #'
-#' @author Goldstein H, Charlton, C.M.J. (2017) Centre for Multilevel Modelling, University of Bristol.
+#' @author Charlton, C.M.J., Goldstein H (2017) Centre for Multilevel Modelling, University of Bristol.
 #' 
 #' @docType package
 #' @name Scalelink
 #' @importFrom Rcpp evalCpp
+#' @importFrom RcppParallel RcppParallelLibs
+#' @importFrom stats complete.cases
+#' @importFrom utils citation
 #' @useDynLib Scalelink
 NULL
  

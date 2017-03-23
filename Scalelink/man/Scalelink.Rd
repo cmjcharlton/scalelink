@@ -25,7 +25,8 @@ Goldstein, H., Charlton, C.M.J. (2017) Scalelink: A Package to link data via sca
 }
 
 \subsection{Paper}{
-Goldstein, H., Harron, K. and Cortina-Borja, M. (2017). A scaling approach to record linkage. Statistics in Medicine (to appear)
+Goldstein, H., Harron, K. and Cortina-Borja, M. (2017). A scaling approach to record linkage. Statistics in Medicine.
+DOI: 10.1002/sim.7287
 }
 }
 
@@ -81,5 +82,5 @@ write.table(result$astar, file="ASTAR", col.names=FALSE, row.names=FALSE)
 
 }
 \author{
-Goldstein H, Charlton, C.M.J. (2017) Centre for Multilevel Modelling, University of Bristol.
+Charlton, C.M.J., Goldstein H (2017) Centre for Multilevel Modelling, University of Bristol.
 }

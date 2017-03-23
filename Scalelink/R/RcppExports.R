@@ -10,7 +10,7 @@
 #' 
 #' @param ldfnew numeric \code{\link[base]{matrix}} representing the linking data file
 #'
-#' @param nreport integer determining the frequency of progress reporing
+#' @param grainsize integer determining minimum grain size for parallisation
 #'
 #' @param debug Boolean indicating whether to output additional debugging information
 #' 
@@ -21,7 +21,7 @@
 #' occurs can be specified via the nreport option. This is implemented in C++
 #' to provide a speed increase over implementing it directly in the R equivalent.
 #' @export
-buildAstar <- function(foinew, ldfnew, nreport, debug) {
-    .Call('Scalelink_buildAstar', PACKAGE = 'Scalelink', foinew, ldfnew, nreport, debug)
+buildAstar <- function(foinew, ldfnew, grainsize, debug) {
+    .Call('Scalelink_buildAstar', PACKAGE = 'Scalelink', foinew, ldfnew, grainsize, debug)
 }
 

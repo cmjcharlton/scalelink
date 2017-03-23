@@ -2,7 +2,7 @@
 \name{LDFCOMP}
 \alias{LDFCOMP}
 \title{Linking data file}
-\format{A data frame with 8842 observations on the following 5 variables:
+\format{A data frame with 8142 observations on the following 5 variables:
   \describe{
     \item{\code{id}}{Identifier.}
     \item{\code{Day}}{Day of Week.}
@@ -15,7 +15,7 @@ Synthetic data created by Harvey Goldstein
 }
 
 \description{
-  File of interest data data with 8842 records and 5 variables.}
+  File of interest data data with 8142 records and 5 variables.}
 \details{
   The \code{LDFCOMP} dataset is one of the sample datasets provided with this package for demonstration purposes.
   This version has records containing missing data removed

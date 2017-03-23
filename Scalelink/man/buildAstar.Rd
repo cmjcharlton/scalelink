@@ -4,14 +4,14 @@
 \alias{buildAstar}
 \title{buildAstar}
 \usage{
-buildAstar(foinew, ldfnew, nreport, debug)
+buildAstar(foinew, ldfnew, grainsize, debug)
 }
 \arguments{
 \item{foinew}{numeric \code{\link[base]{matrix}} representing the file of interest}
 
 \item{ldfnew}{numeric \code{\link[base]{matrix}} representing the linking data file}
 
-\item{nreport}{integer determining the frequency of progress reporing}
+\item{grainsize}{integer determining minimum grain size for parallisation}
 
 \item{debug}{Boolean indicating whether to output additional debugging information}
 }
