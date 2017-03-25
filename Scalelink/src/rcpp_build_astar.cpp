@@ -20,7 +20,7 @@ struct Accumulate : public Worker
 	// constructors
 	Accumulate(const NumericMatrix foi, const NumericMatrix ldf) : foi(foi), ldf(ldf) {
 		unsigned nident = foi.ncol();
-		foiexp.resize(nident * 2);
+		foiexp.resize(nident);
 		accum.resize(nident * 2);
 		for (unsigned i = 0u; i < nident * 2; ++i) {
 			accum[i].resize(nident * 2);
@@ -28,7 +28,7 @@ struct Accumulate : public Worker
 	}
 	Accumulate(const Accumulate& acc, Split) : foi(acc.foi), ldf(acc.ldf) {
 		unsigned nident = foi.ncol();
-		foiexp.resize(nident * 2);
+		foiexp.resize(nident);
 		accum.resize(nident * 2);
 		for (unsigned i = 0u; i < nident * 2; ++i) {
 			accum[i].resize(nident * 2);
@@ -38,23 +38,55 @@ struct Accumulate : public Worker
 	void operator()(std::size_t begin, std::size_t end) {
 		for (std::size_t i = begin; i < end; ++i) {
 			for (std::size_t j = 0u; j < ldf.nrow(); ++j) {
-				for (std::size_t k = 0u; k < foi.ncol(); ++k) {
-					if (foi(i, k) - ldf(j, k) != 0) {
-						foiexp[k*2] = 1;
-						foiexp[(k*2) + 1] = 0;
+
+				for (std::size_t x = 0u; x < foi.ncol(); ++x) {
+					if (foi(i, x) - ldf(j, x) != 0) {
+						foiexp[x] = 1;
 					} else {
-						foiexp[(k*2) + 1] = 1;
-						foiexp[k*2] = 0;
+						foiexp[x] = 0;
 					}
 				}
 
 				for (std::size_t x = 0u; x < foiexp.size(); ++x) {
-					if (foiexp[x] == 1) {
-						for (std::size_t y = 0u; y <= x; ++y) {
-							accum[x][y] += foiexp[y];
+					for (std::size_t y = 0u; y <= x; ++y) {
+						if (foiexp[x] & foiexp[y]) {
+							accum[x*2][y*2]++;
+						}
+						if (!foiexp[x] & foiexp[y]) {
+							accum[(x*2)+1][y*2]++;
+						}
+						if (foiexp[x] & !foiexp[y]) {
+							accum[x*2][(y*2)+1]++;
+						}
+						if (!foiexp[x] & !foiexp[y]) {
+							accum[(x*2)+1][(y*2)+1]++;
 						}
 					}
 				}
+
+/*
+				for (std::size_t x = 0u; x < foiexp.size(); ++x) {
+					for (std::size_t y = 0u; y <= x; ++y) {
+						accum[x*2][y*2] += foiexp[x] & foiexp[y];
+						accum[(x*2)+1][y*2] += !foiexp[x] & foiexp[y];
+						accum[x*2][(y*2)+1] += foiexp[x] & !foiexp[y];
+						accum[(x*2)+1][(y*2)+1] += !foiexp[x] & !foiexp[y];
+					}
+				}
+*/
+
+
+
+/*
+				for (std::size_t x = 0u; x < foi.ncol(); ++x) {
+					for (std::size_t y = 0u; y <= x; ++y) {
+						accum[x*2][y*2] += (foi(i, x) == ldf(j, x)) & (foi(i, y) == ldf(j, y));
+						accum[(x*2)+1][y*2] += (foi(i, x) != ldf(j, x)) & (foi(i, y) == ldf(j, y));
+						accum[x*2][(y*2)+1] += (foi(i, x) == ldf(j, x)) & (foi(i, y) != ldf(j, y));
+						accum[(x*2)+1][(y*2)+1] += (foi(i, x) != ldf(j, x)) & (foi(i, y) != ldf(j, y));
+					}
+				}
+*/
 			}
 		}
 		// Rcpp::Rcout << "Processed FOI records " << begin << " to " << end << std::endl;
