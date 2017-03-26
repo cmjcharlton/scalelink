@@ -65,13 +65,13 @@ calcScores <- function(FOI, LDF, missing.value=NA, min.parallelblocksize=1, outp
   # randomly insert for missing values - first LDF then FOI
   LDFCOMP <- complete.cases(LDF)
   LDFNEW <- data.matrix(LDF[LDFCOMP, ])
-  LDFmat <- matrix(nrow=nrow(LDF), ncol=ncol(LDF))
+  LDFmat <- matrix(nrow=nrow(LDF), ncol=ncol(LDF), byrow=TRUE)
   LDFmat[LDFCOMP, ] <- LDFNEW
   LDFmat[!LDFCOMP, ] <- LDFNEW[sample(nrow(LDFNEW), size=(nrow(LDF) - nrow(LDFNEW)), replace=TRUE), ]
 
   FOICOMP <- complete.cases(FOI)
   FOINEW <- data.matrix(FOI[FOICOMP, ])
-  FOImat <- matrix(0, nrow(FOI), ncol(FOI))
+  FOImat <- matrix(0, nrow(FOI), ncol(FOI), byrow=TRUE)
   FOImat[FOICOMP, ] <- FOINEW
   FOImat[!FOICOMP, ] <- FOINEW[sample(nrow(FOINEW), size=(nrow(FOI) - nrow(FOINEW)), replace=TRUE), ]
   
