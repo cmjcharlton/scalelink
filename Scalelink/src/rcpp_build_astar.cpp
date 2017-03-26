@@ -47,8 +47,8 @@ bool dbg = false;
 struct Accumulate : public Worker
 {
 	// source data
-	const RMatrix<double> foi;
-	const RMatrix<double> ldf;
+	const RMatrix<int> foi;
+	const RMatrix<int> ldf;
 
 	// accumulated value
 	LongLongMatrix accum;
@@ -60,7 +60,7 @@ struct Accumulate : public Worker
 	std::vector<std::pair<int, int> > blockrange;
 
 	// constructors
-	Accumulate(const NumericMatrix foi, const NumericMatrix ldf) : foi(foi), ldf(ldf) {
+	Accumulate(const IntegerMatrix foi, const IntegerMatrix ldf) : foi(foi), ldf(ldf) {
 		std::size_t nident = foi.ncol();
 		foiexp.resize(nident);
 		accum = LongLongMatrix(nident * 2, nident * 2);
@@ -120,7 +120,7 @@ struct Accumulate : public Worker
 //' to provide a speed increase over implementing it directly in the R equivalent.
 //' @export
 // [[Rcpp::export]]
-NumericMatrix buildAstar(NumericMatrix foinew, NumericMatrix ldfnew, int grainsize, bool debug) {
+NumericMatrix buildAstar(IntegerMatrix foinew, IntegerMatrix ldfnew, int grainsize, bool debug) {
 	dbg = debug;
 	uint64_t nrecfoi = foinew.nrow();
 	uint64_t nrecldf = ldfnew.nrow();

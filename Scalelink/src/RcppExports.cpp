@@ -6,13 +6,13 @@
 using namespace Rcpp;
 
 // buildAstar
-NumericMatrix buildAstar(NumericMatrix foinew, NumericMatrix ldfnew, int grainsize, bool debug);
+NumericMatrix buildAstar(IntegerMatrix foinew, IntegerMatrix ldfnew, int grainsize, bool debug);
 RcppExport SEXP Scalelink_buildAstar(SEXP foinewSEXP, SEXP ldfnewSEXP, SEXP grainsizeSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type foinew(foinewSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type ldfnew(ldfnewSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type foinew(foinewSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type ldfnew(ldfnewSEXP);
     Rcpp::traits::input_parameter< int >::type grainsize(grainsizeSEXP);
     Rcpp::traits::input_parameter< bool >::type debug(debugSEXP);
     rcpp_result_gen = Rcpp::wrap(buildAstar(foinew, ldfnew, grainsize, debug));
