@@ -109,7 +109,7 @@ calcScores <- function(FOI, LDF, missing.value=NA, min.parallelblocksize=1, outp
   names(OUTSCORES) <- output.varnames
 
   endtime <- proc.time() - starttime
-  cat(paste("Elasped time:", endtime[3], "\n"))
+  cat(paste("Elapsed time:", endtime[3], "\n"))
 
   list(scores=OUTSCORES, astar=ASTAR)
 }
