@@ -8,12 +8,12 @@ using namespace RcppParallel;
 struct LongLongMatrix {
 	std::size_t nrow;
 	std::size_t ncol;
-	std::vector<uint64_t> data;
+	std::vector<std::array<uint64_t, 4> > data;
 
 	LongLongMatrix() : nrow(0), ncol(0) {
 	}
 
-	LongLongMatrix(std::size_t nrows, std::size_t ncols) : nrow(nrows), ncol(ncols), data(nrows * ncols * 4) {
+	LongLongMatrix(std::size_t nrows, std::size_t ncols) : nrow(nrows), ncol(ncols), data(nrows * ncols) {
 	}
 
 	LongLongMatrix(const LongLongMatrix &mat) : nrow(mat.nrow), ncol(mat.ncol) {
@@ -21,16 +21,22 @@ struct LongLongMatrix {
 	}
 
 	uint64_t& operator()(std::size_t i, std::size_t j, std::size_t k) {
-		return data[(i * ncol + j) * 4 + k];
+		return data[i * ncol + j][k];
 	}
 
 	uint64_t operator()(std::size_t i, std::size_t j, std::size_t k) const {
-		return data[(i * ncol + j) * 4 + k];
+		return data[i * ncol + j][k];
 	}
 };
 
 LongLongMatrix& operator += (LongLongMatrix & result, const LongLongMatrix & rhs) {
-	std::transform(result.data.begin(), result.data.end(), rhs.data.begin(), result.data.begin(), std::plus<uint64_t>());
+	for (size_t i = 0u; i < result.data.size(); ++i) {
+		result.data[i][0] += rhs.data[i][0];
+		result.data[i][1] += rhs.data[i][1];
+		result.data[i][2] += rhs.data[i][2];
+		result.data[i][3] += rhs.data[i][3];
+	}
+	//std::transform(result.data.begin(), result.data.end(), rhs.data.begin(), result.data.begin(), std::plus<uint64_t>());
 	return result;
 }
 
