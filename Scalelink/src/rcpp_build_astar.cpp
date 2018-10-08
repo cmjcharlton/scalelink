@@ -47,11 +47,16 @@ bool dbg = false;
 struct Accumulate : public Worker
 {
 	// source data
-	const RMatrix<int> foi;
-	const RMatrix<int> ldf;
+	std::vector<RVector<double> > foicols;
+	std::vector<RVector<double> > ldfcols;
 
 	// accumulated value
 	LongLongMatrix accum;
+
+	// dimensions
+	const size_t nvar;
+	const size_t nfoi;
+	const size_t nldf;
 
 	// temporary storage
 	std::vector<int> foiexp;
@@ -60,15 +65,20 @@ struct Accumulate : public Worker
 	std::vector<std::pair<int, int> > blockrange;
 
 	// constructors
-	Accumulate(const IntegerMatrix foi, const IntegerMatrix ldf) : foi(foi), ldf(ldf) {
-		std::size_t nident = foi.ncol();
-		foiexp.resize(nident);
-		accum = LongLongMatrix(nident * 2, nident * 2);
+	Accumulate(const DataFrame foi, const DataFrame ldf) : nvar(foi.ncol()), nfoi(foi.nrows()), nldf(ldf.nrows()) {
+		for (std::size_t x = 0u; x < nvar; ++x) {
+			NumericVector foi_r = foi[x];
+			foicols.emplace_back(RVector<double>(foi_r));
+			NumericVector ldf_r = ldf[x];
+			ldfcols.emplace_back(RVector<double>(ldf_r));
+		}
+
+		foiexp.resize(nvar);
+		accum = LongLongMatrix(nvar * 2, nvar * 2);
 	}
-	Accumulate(const Accumulate& acc, Split) : foi(acc.foi), ldf(acc.ldf) {
-		std::size_t nident = foi.ncol();
-		foiexp.resize(nident);
-		accum = LongLongMatrix(nident * 2, nident * 2);
+	Accumulate(const Accumulate& acc, Split) : foicols(acc.foicols), ldfcols(acc.ldfcols), nvar(acc.nvar), nfoi(acc.nfoi), nldf(acc.nldf) {
+		foiexp.resize(nvar);
+		accum = LongLongMatrix(nvar * 2, nvar * 2);
 	}
 	// accumulate just the element of the range I've been asked to
 	void operator()(std::size_t begin, std::size_t end) {
@@ -76,11 +86,11 @@ struct Accumulate : public Worker
 			blockrange.push_back(std::pair<int, int>(begin, end));
 		}
 		for (std::size_t i = begin; i < end; ++i) {
-			for (std::size_t j = 0u; j < ldf.nrow(); ++j) {
-				for (std::size_t x = 0u; x < foi.ncol(); ++x) {
-					foiexp[x] = (foi(i, x) != ldf(j, x));
+			for (std::size_t j = 0u; j < nldf; ++j) {
+				for (std::size_t x = 0u; x < nvar; ++x) {
+					foiexp[x] = foicols[x][i] != ldfcols[x][j];
 				}
-				for (std::size_t x = 0u; x < foiexp.size(); ++x) {
+				for (std::size_t x = 0u; x < nvar; ++x) {
 					for (std::size_t y = 0u; y <= x; ++y) {
 						accum((x*2)+foiexp[x], (y*2)+foiexp[y])++;
 					}
@@ -120,7 +130,7 @@ struct Accumulate : public Worker
 //' to provide a speed increase over implementing it directly in the R equivalent.
 //' @export
 // [[Rcpp::export]]
-NumericMatrix buildAstar(IntegerMatrix foinew, IntegerMatrix ldfnew, int grainsize, bool debug) {
+NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool debug) {
 	dbg = debug;
 	uint64_t nrecfoi = foinew.nrow();
 	uint64_t nrecldf = ldfnew.nrow();
@@ -129,10 +139,39 @@ NumericMatrix buildAstar(IntegerMatrix foinew, IntegerMatrix ldfnew, int grainsi
 
 	NumericMatrix astar((nident*2) + 2, (nident*2) + 2);
 
+	bool anystr = false;
+	for (std::size_t x = 0u; x < nident; ++x) {
+		if (TYPEOF(foinew[x]) != TYPEOF(ldfnew[x])) {
+			Rcpp::Rcout << "Variable types do not match between LDF and FOI data frames" << std::endl;
+			return(astar);
+		}
+		switch (TYPEOF(foinew[x])) {
+		case INTSXP:
+			if (debug == true) {
+				Rcpp::Rcout << "Variable " << x << " is integer" << std::endl;
+			}
+			break;
+		case REALSXP: 
+			if (debug == true) {
+				Rcpp::Rcout << "Variable " << x << " is real" << std::endl;
+			}
+			break;
+		case STRSXP:
+			anystr = true;
+			if (debug == true) {
+				Rcpp::Rcout << "Variable " << x << " is string" << std::endl;
+			}
+			break;
+		default:
+			Rcpp::Rcout << "Unsupported variable type" << std::endl;
+			return(astar);
+		}
+	}
+
 	// declare the Accumulate instance 
 	Accumulate acc(foinew, ldfnew);
    
-	if (grainsize < nrecfoi) {
+	if (grainsize < nrecfoi && anystr == false) {
 		// call parallel_reduce to start the work
 		parallelReduce(0, nrecfoi, acc, grainsize);
 		if (debug == true) {
@@ -151,12 +190,57 @@ NumericMatrix buildAstar(IntegerMatrix foinew, IntegerMatrix ldfnew, int grainsi
 		// std::vector<std::vector<unsigned long long> > accum(nident*2, std::vector<unsigned long long>(nident*2));
 		std::vector<int> foiexp(nident);
 
+		std::vector<char> coltype;
+		std::vector<IntegerVector> foicols_int;
+		std::vector<IntegerVector> ldfcols_int;
+		std::vector<NumericVector> foicols_num;
+		std::vector<NumericVector> ldfcols_num;
+		std::vector<StringVector> foicols_str;
+		std::vector<StringVector> ldfcols_str;
+
+		for (std::size_t x = 0u; x < foiexp.size(); ++x) {
+			switch (TYPEOF(foinew[x])) {
+			case INTSXP:
+				coltype.emplace_back('I');
+				foicols_int.emplace_back(foinew[x]);
+				ldfcols_int.emplace_back(ldfnew[x]);
+				break;
+			case REALSXP: 
+				coltype.emplace_back('R');
+				foicols_num.emplace_back(foinew[x]);
+				ldfcols_num.emplace_back(ldfnew[x]);
+				break;
+			case STRSXP:
+				coltype.emplace_back('S');
+				foicols_str.emplace_back(foinew[x]);
+				ldfcols_str.emplace_back(ldfnew[x]);
+				break;
+			}
+		}
+
 		Rcpp::Rcout << "Progress: |0";
 		std::flush(Rcpp::Rcout);
 		for (std::size_t i = 0u; i < nrecfoi; ++i) {
 			for (std::size_t j = 0u; j < nrecldf; ++j) {
+				int int_count = 0;
+				int num_count = 0;
+				int str_count = 0;
 				for (std::size_t x = 0u; x < foiexp.size(); ++x) {
-					foiexp[x] = (foinew(i, x) != ldfnew(j, x));
+					switch (coltype[x]) {
+					case 'I':
+						foiexp[x] = foicols_int[int_count][i] != ldfcols_int[int_count][j];
+						++int_count;
+						break;
+					case 'R':
+						foiexp[x] = foicols_num[num_count][i] != ldfcols_num[num_count][j];
+						++num_count;
+						break;
+					case 'S':
+						foiexp[x] = foicols_str[str_count][i] != ldfcols_str[str_count][j];
+						++str_count;
+						break;
+					}
+					
 				}
 				for (std::size_t x = 0u; x < foiexp.size(); ++x) {
 					for (std::size_t y = 0u; y <= x; ++y) {

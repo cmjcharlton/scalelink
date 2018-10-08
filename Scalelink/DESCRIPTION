@@ -1,8 +1,8 @@
 Package: Scalelink
 Type: Package
 Title: Create Scale Linkage Scores
-Version: 1.0
-Date: 2017-03-27
+Version: 1.1
+Date: 2018-10-08
 Authors@R: c(person("Chris", "Charlton", role="aut"),
              person("Harvey", "Goldstein", role=c("aut", "cre"), email="H.Goldstein@bristol.ac.uk"))
 Author: Chris Charlton [aut],
@@ -15,4 +15,4 @@ License: GPL (>= 2)
 Imports: Rcpp (>= 0.12.9), RcppParallel
 LinkingTo: Rcpp, RcppParallel
 SystemRequirements: GNU make
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

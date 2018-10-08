@@ -22,6 +22,6 @@
 #' to provide a speed increase over implementing it directly in the R equivalent.
 #' @export
 buildAstar <- function(foinew, ldfnew, grainsize, debug) {
-    .Call('Scalelink_buildAstar', PACKAGE = 'Scalelink', foinew, ldfnew, grainsize, debug)
+    .Call('_Scalelink_buildAstar', PACKAGE = 'Scalelink', foinew, ldfnew, grainsize, debug)
 }
 

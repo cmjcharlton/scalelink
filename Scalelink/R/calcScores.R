@@ -64,19 +64,15 @@ calcScores <- function(FOI, LDF, missing.value=NA, min.parallelblocksize=1, outp
   
   # randomly insert for missing values - first LDF then FOI
   LDFCOMP <- complete.cases(LDF)
-  LDFNEW <- data.matrix(LDF[LDFCOMP, ])
-  LDFmat <- matrix(nrow=nrow(LDF), ncol=ncol(LDF), byrow=TRUE)
-  LDFmat[LDFCOMP, ] <- LDFNEW
-  LDFmat[!LDFCOMP, ] <- LDFNEW[sample(nrow(LDFNEW), size=(nrow(LDF) - nrow(LDFNEW)), replace=TRUE), ]
+  LDFNEW <- LDF[LDFCOMP, ]
+  LDF[!LDFCOMP, ] <- LDFNEW[sample(nrow(LDFNEW), size=(nrow(LDF) - nrow(LDFNEW)), replace=TRUE), ]
 
   FOICOMP <- complete.cases(FOI)
-  FOINEW <- data.matrix(FOI[FOICOMP, ])
-  FOImat <- matrix(0, nrow(FOI), ncol(FOI), byrow=TRUE)
-  FOImat[FOICOMP, ] <- FOINEW
-  FOImat[!FOICOMP, ] <- FOINEW[sample(nrow(FOINEW), size=(nrow(FOI) - nrow(FOINEW)), replace=TRUE), ]
+  FOINEW <- FOI[FOICOMP, ]
+  FOI[!FOICOMP, ] <- FOINEW[sample(nrow(FOINEW), size=(nrow(FOI) - nrow(FOINEW)), replace=TRUE), ]
   
   #  Accumulates matrix values. Note: assumes all identifiers have just 2 categories.
-  ASTAR <- buildAstar(FOImat, LDFmat, min.parallelblocksize, debug)
+  ASTAR <- buildAstar(data.frame(FOI), data.frame(LDF), min.parallelblocksize, debug)
   if (isTRUE(debug)) {
     print("A*:")
     print(ASTAR)
