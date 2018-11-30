@@ -4,7 +4,7 @@
 \alias{buildAstar}
 \title{buildAstar}
 \usage{
-buildAstar(foinew, ldfnew, grainsize, debug)
+buildAstar(foinew, ldfnew, grainsize, debug, f = NULL)
 }
 \arguments{
 \item{foinew}{numeric \code{\link[base]{matrix}} representing the file of interest}

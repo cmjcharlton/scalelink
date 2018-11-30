@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // buildAstar
-NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool debug);
-RcppExport SEXP _Scalelink_buildAstar(SEXP foinewSEXP, SEXP ldfnewSEXP, SEXP grainsizeSEXP, SEXP debugSEXP) {
+NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool debug, Rcpp::Nullable<Rcpp::Function> f);
+RcppExport SEXP _Scalelink_buildAstar(SEXP foinewSEXP, SEXP ldfnewSEXP, SEXP grainsizeSEXP, SEXP debugSEXP, SEXP fSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -15,13 +15,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< DataFrame >::type ldfnew(ldfnewSEXP);
     Rcpp::traits::input_parameter< int >::type grainsize(grainsizeSEXP);
     Rcpp::traits::input_parameter< bool >::type debug(debugSEXP);
-    rcpp_result_gen = Rcpp::wrap(buildAstar(foinew, ldfnew, grainsize, debug));
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::Function> >::type f(fSEXP);
+    rcpp_result_gen = Rcpp::wrap(buildAstar(foinew, ldfnew, grainsize, debug, f));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_Scalelink_buildAstar", (DL_FUNC) &_Scalelink_buildAstar, 4},
+    {"_Scalelink_buildAstar", (DL_FUNC) &_Scalelink_buildAstar, 5},
     {NULL, NULL, 0}
 };
 

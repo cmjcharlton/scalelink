@@ -15,4 +15,5 @@ License: GPL (>= 2)
 Imports: Rcpp (>= 0.12.9), RcppParallel
 LinkingTo: Rcpp, RcppParallel
 SystemRequirements: GNU make
+Encoding: UTF-8
 RoxygenNote: 6.1.0

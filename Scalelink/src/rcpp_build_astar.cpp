@@ -130,7 +130,7 @@ struct Accumulate : public Worker
 //' to provide a speed increase over implementing it directly in the R equivalent.
 //' @export
 // [[Rcpp::export]]
-NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool debug) {
+NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool debug, Rcpp::Nullable<Rcpp::Function> f = R_NilValue) {
 	dbg = debug;
 	uint64_t nrecfoi = foinew.nrow();
 	uint64_t nrecldf = ldfnew.nrow();
@@ -171,7 +171,7 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 	// declare the Accumulate instance 
 	Accumulate acc(foinew, ldfnew);
    
-	if (grainsize < nrecfoi && anystr == false) {
+	if (grainsize < nrecfoi && anystr == false && !f.isNotNull()) {
 		// call parallel_reduce to start the work
 		parallelReduce(0, nrecfoi, acc, grainsize);
 		if (debug == true) {
@@ -228,15 +228,33 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 				for (std::size_t x = 0u; x < foiexp.size(); ++x) {
 					switch (coltype[x]) {
 					case 'I':
-						foiexp[x] = foicols_int[int_count][i] != ldfcols_int[int_count][j];
+						if (f.isNotNull()) {
+							auto foival = foicols_int[int_count][i];
+							auto ldfval = ldfcols_int[int_count][j];
+							foiexp[x] = Rcpp::as<int>(Rcpp::as<Rcpp::Function>(f)(foival, ldfval));
+						} else {
+							foiexp[x] = foicols_int[int_count][i] != ldfcols_int[int_count][j];
+						}
 						++int_count;
 						break;
 					case 'R':
-						foiexp[x] = foicols_num[num_count][i] != ldfcols_num[num_count][j];
+						if (f.isNotNull()) {
+							auto foival = foicols_num[num_count][i];
+							auto ldfval = ldfcols_num[num_count][j];
+							foiexp[x] = Rcpp::as<int>(Rcpp::as<Rcpp::Function>(f)(foival, ldfval));
+						} else {
+							foiexp[x] = foicols_num[num_count][i] != ldfcols_num[num_count][j];
+						}
 						++num_count;
 						break;
 					case 'S':
-						foiexp[x] = foicols_str[str_count][i] != ldfcols_str[str_count][j];
+						if (f.isNotNull()) {
+							auto foival = foicols_str[str_count][i];
+							auto ldfval = ldfcols_str[str_count][j];
+							foiexp[x] = Rcpp::as<int>(Rcpp::as<Rcpp::Function>(f)(foival, ldfval));
+						} else {
+							foiexp[x] = foiexp[x] = foicols_str[str_count][i] != ldfcols_str[str_count][j];
+						}
 						++str_count;
 						break;
 					}

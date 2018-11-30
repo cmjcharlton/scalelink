@@ -28,7 +28,7 @@
 #' @author Goldstein H., and Charlton, C.M.J., (2017) Centre for Multilevel Modelling, University of Bristol.
 #' 
 #' @export
-calcScores <- function(FOI, LDF, missing.value=NA, min.parallelblocksize=1, output.varnames=NULL, debug=FALSE) {
+calcScores <- function(FOI, LDF, missing.value=NA, min.parallelblocksize=1, output.varnames=NULL, debug=FALSE, func=NULL) {
   NFOI <- nrow(FOI)
   NLDF <- nrow(LDF)
   NIDENT <- ncol(FOI)
@@ -72,7 +72,7 @@ calcScores <- function(FOI, LDF, missing.value=NA, min.parallelblocksize=1, outp
   FOI[!FOICOMP, ] <- FOINEW[sample(nrow(FOINEW), size=(nrow(FOI) - nrow(FOINEW)), replace=TRUE), ]
   
   #  Accumulates matrix values. Note: assumes all identifiers have just 2 categories.
-  ASTAR <- buildAstar(data.frame(FOI), data.frame(LDF), min.parallelblocksize, debug)
+  ASTAR <- buildAstar(data.frame(FOI), data.frame(LDF), min.parallelblocksize, debug, func)
   if (isTRUE(debug)) {
     print("A*:")
     print(ASTAR)
