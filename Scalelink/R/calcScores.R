@@ -64,11 +64,11 @@ calcScores <- function(FOI, LDF, missing.value=NA, min.parallelblocksize=1, outp
   
   # randomly insert for missing values - first LDF then FOI
   LDFCOMP <- complete.cases(LDF)
-  LDFNEW <- LDF[LDFCOMP, ]
+  LDFNEW <- LDF[LDFCOMP, , drop=FALSE]
   LDF[!LDFCOMP, ] <- LDFNEW[sample(nrow(LDFNEW), size=(nrow(LDF) - nrow(LDFNEW)), replace=TRUE), ]
 
   FOICOMP <- complete.cases(FOI)
-  FOINEW <- FOI[FOICOMP, ]
+  FOINEW <- FOI[FOICOMP, , drop=FALSE]
   FOI[!FOICOMP, ] <- FOINEW[sample(nrow(FOINEW), size=(nrow(FOI) - nrow(FOINEW)), replace=TRUE), ]
   
   #  Accumulates matrix values. Note: assumes all identifiers have just 2 categories.
