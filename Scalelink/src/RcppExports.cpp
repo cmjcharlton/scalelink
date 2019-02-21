@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // buildAstar
 NumericMatrix buildAstar(NumericMatrix foinew, NumericMatrix ldfnew, int grainsize, bool debug);
-RcppExport SEXP Scalelink_buildAstar(SEXP foinewSEXP, SEXP ldfnewSEXP, SEXP grainsizeSEXP, SEXP debugSEXP) {
+RcppExport SEXP _Scalelink_buildAstar(SEXP foinewSEXP, SEXP ldfnewSEXP, SEXP grainsizeSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,4 +18,14 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(buildAstar(foinew, ldfnew, grainsize, debug));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_Scalelink_buildAstar", (DL_FUNC) &_Scalelink_buildAstar, 4},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_Scalelink(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

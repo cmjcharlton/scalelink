@@ -2,13 +2,12 @@
 \name{LDF}
 \alias{LDF}
 \title{Linking data file}
-\format{A data frame with 10000 observations on the following 6 variables:
+\format{A data frame with 10000 observations on the following 5 variables:
   \describe{
-    \item{\code{id}}{Identifier.}
+    \item{\code{id}}{Record Identifier (not used for linking).}
     \item{\code{Day}}{Day of Week.}
     \item{\code{Month}}{Month of Year.}
     \item{\code{Year}}{Year.}
-    \item{\code{Val}}{Value.}
     \item{\code{Sex}}{Gender: with codes \code{1} Male and \code{2} Female.}
 }}
 \source{
@@ -23,10 +22,7 @@ Synthetic data created by Harvey Goldstein
 }
 
 \examples{
-\dontrun{
-
 data(LDF, package = "Scalelink")
 summary(LDF)
-}
 }
 \keyword{datasets}
