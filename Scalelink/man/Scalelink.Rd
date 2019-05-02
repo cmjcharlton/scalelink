@@ -32,12 +32,15 @@ DOI: 10.1002/sim.7287
 
 \section{Maintainer}{
 
-Harvey Goldstein \email{harvey.goldstein@bristol.ac.uk}
+Chris Charlton \email{c.charlton@bristol.ac.uk}
 }
 
 \examples{
-\dontrun{
 library(Scalelink)
+
+## Set the number of CPU cores to use (omit to use all available)
+RcppParallel::setThreadOptions(numThreads = 2)
+
 data(FOI, package = "Scalelink")
 data(LDFCOMP, package = "Scalelink")
 
@@ -49,6 +52,7 @@ print(result$scores)
 ## Scalelink package provides two examples using synthetic data
 ## one with complete data and one containing missing values
 
+\dontrun{
 ## For a list of demo titles
 demo(package = 'Scalelink')
 
@@ -71,13 +75,14 @@ FOI<-read.table("FOI")
 LDF<-read.table("LDF")
 IDENTIFIERS_FOI<-read.table('IDENTIFIERS_FOI')
 IDENTIFIERS_LDF<-read.table('IDENTIFIERS_LDF')
-result <- calcScores(FOI[, which(IDENTIFIERS_FOI == 1)], LDF[, which(IDENTIFIERS_LDF == 1)], missing.value=-9.999e+029)
+result <- calcScores(FOI[, which(IDENTIFIERS_FOI == 1)], LDF[, which(IDENTIFIERS_LDF == 1)], 
+missing.value=-9.999e+029)
 
 ##To view the scores:
 print(round(result$scores, 2))
 
-##To write the A* matrix to a file in the current directory:
-write.table(result$astar, file="ASTAR", col.names=FALSE, row.names=FALSE)
+##To view the A* matrix:
+print(result$astar)
 }
 
 }

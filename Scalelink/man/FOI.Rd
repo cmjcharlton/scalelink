@@ -4,7 +4,7 @@
 \title{File of interest}
 \format{A data frame with 7742 observations on the following 5 variables:
   \describe{
-    \item{\code{id}}{Identifier.}
+    \item{\code{id}}{Record Identifier (not used for linking).}
     \item{\code{Day}}{Day of Week.}
     \item{\code{Month}}{Month of Year.}
     \item{\code{Year}}{Year.}
@@ -20,10 +20,7 @@ Synthetic data created by Harvey Goldstein
   The \code{FOI} dataset is one of the sample datasets provided with this package for demonstration purposes.}
 
 \examples{
-\dontrun{
-
 data(FOI, package = "Scalelink")
 summary(FOI)
-}
 }
 \keyword{datasets}

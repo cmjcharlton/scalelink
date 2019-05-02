@@ -4,7 +4,7 @@
 \title{Linking data file}
 \format{A data frame with 8142 observations on the following 5 variables:
   \describe{
-    \item{\code{id}}{Identifier.}
+    \item{\code{id}}{Record Identifier (not used for linking).}
     \item{\code{Day}}{Day of Week.}
     \item{\code{Month}}{Month of Year.}
     \item{\code{Year}}{Year.}
@@ -22,10 +22,7 @@ Synthetic data created by Harvey Goldstein
 }
 
 \examples{
-\dontrun{
-
 data(LDFCOMP, package = "Scalelink")
 summary(LDFCOMP)
-}
 }
 \keyword{datasets}
