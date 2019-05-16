@@ -173,10 +173,11 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 		}
 	}
 
-	// declare the Accumulate instance 
-	Accumulate acc(foinew, ldfnew);
-   
+	LongLongMatrix accum(nident * 2, nident * 2);
+
 	if (grainsize < nrecfoi && anystr == false) {
+		// declare the Accumulate instance 
+		Accumulate acc(foinew, ldfnew);
 		// call parallel_reduce to start the work
 		parallelReduce(0, nrecfoi, acc, grainsize);
 		if (debug == true) {
@@ -185,6 +186,7 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 				Rcpp::Rcout << "Range: " << acc.blockrange[i].first << " to " << acc.blockrange[i].second << std::endl;
 			}
 		}
+		accum += acc.accum;
 	} else {
 		// run the calculations in series
 		std::size_t nreport = 10;
@@ -261,7 +263,7 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 				}
 				for (std::size_t x = 0u; x < foiexp.size(); ++x) {
 					for (std::size_t y = 0u; y <= x; ++y) {
-						acc.accum((x*2)+foiexp[x], (y*2)+foiexp[y])++;
+						accum((x*2)+foiexp[x], (y*2)+foiexp[y])++;
 					}
 				}
 			}
@@ -280,9 +282,9 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 
 	if (debug == true) {
 		Rcpp::Rcout << "Accumulations: " << std::endl;
-		for (std::size_t i = 0u; i < acc.accum.nrow; i++) {
-			for (std::size_t j = 0u; j < acc.accum.ncol; j++) {
-				Rcpp::Rcout << acc.accum(i, j) << " ";
+		for (std::size_t i = 0u; i < accum.nrow; i++) {
+			for (std::size_t j = 0u; j < accum.ncol; j++) {
+				Rcpp::Rcout << accum(i, j) << " ";
 			}
 			Rcpp::Rcout << std::endl;
 		}
@@ -293,10 +295,10 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 	for (std::size_t i = 0u; i < nident * 2; i += 2) {
 		for (std::size_t j = 0u; j < i; j += 2) {
 			uint64_t test = total;
-			test -= acc.accum(i, j);
-			test -= acc.accum(i+1, j);
-			test -= acc.accum(i, j+1);
-			test -= acc.accum(i+1, j+1);
+			test -= accum(i, j);
+			test -= accum(i+1, j);
+			test -= accum(i, j+1);
+			test -= accum(i+1, j+1);
 			if (test != 0) {
 				sumerr = true;
 			}
@@ -304,9 +306,9 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 	}
 
 	for (std::size_t i = 0u; i < nident * 2; ++i) {
-		astar(i, i) = acc.accum(i, i) * (nident - 1.0) / (nident * nident) * 2.0;
+		astar(i, i) = accum(i, i) * (nident - 1.0) / (nident * nident) * 2.0;
 		for (std::size_t j = 0u; j < i; j++) {
-			astar(i, j) -= acc.accum(i, j) / (nident * nident) * 2.0;
+			astar(i, j) -= accum(i, j) / (nident * nident) * 2.0;
 		}
 	}
 
