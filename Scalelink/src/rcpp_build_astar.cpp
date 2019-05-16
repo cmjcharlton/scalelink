@@ -156,6 +156,11 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 				Rcpp::Rcout << "Variable " << x << " is real" << std::endl;
 			}
 			break;
+		case LGLSXP:
+			if (debug == true) {
+				Rcpp::Rcout << "Variable " << x << " is logical" << std::endl;
+			}
+			break;
 		case STRSXP:
 			anystr = true;
 			if (debug == true) {
@@ -195,6 +200,8 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 		std::vector<IntegerVector> ldfcols_int;
 		std::vector<NumericVector> foicols_num;
 		std::vector<NumericVector> ldfcols_num;
+		std::vector<LogicalVector> foicols_lgl;
+		std::vector<LogicalVector> ldfcols_lgl;
 		std::vector<StringVector> foicols_str;
 		std::vector<StringVector> ldfcols_str;
 
@@ -209,6 +216,11 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 				coltype.emplace_back('R');
 				foicols_num.emplace_back(foinew[x]);
 				ldfcols_num.emplace_back(ldfnew[x]);
+				break;
+			case LGLSXP:
+				coltype.emplace_back('L');
+				foicols_lgl.emplace_back(foinew[x]);
+				ldfcols_lgl.emplace_back(ldfnew[x]);
 				break;
 			case STRSXP:
 				coltype.emplace_back('S');
@@ -225,6 +237,7 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 				int int_count = 0;
 				int num_count = 0;
 				int str_count = 0;
+				int lgl_count = 0;
 				for (std::size_t x = 0u; x < foiexp.size(); ++x) {
 					switch (coltype[x]) {
 					case 'I':
@@ -233,6 +246,10 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 						break;
 					case 'R':
 						foiexp[x] = foicols_num[num_count][i] != ldfcols_num[num_count][j];
+						++num_count;
+						break;
+					case 'L':
+						foiexp[x] = foicols_lgl[lgl_count][i] != ldfcols_lgl[lgl_count][j];
 						++num_count;
 						break;
 					case 'S':
