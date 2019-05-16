@@ -7,9 +7,9 @@
 buildAstar(foinew, ldfnew, grainsize, debug)
 }
 \arguments{
-\item{foinew}{numeric \code{\link[base]{matrix}} representing the file of interest}
+\item{foinew}{\code{\link[base]{data.frame}} representing the file of interest}
 
-\item{ldfnew}{numeric \code{\link[base]{matrix}} representing the linking data file}
+\item{ldfnew}{\code{\link[base]{data.frame}} representing the linking data file}
 
 \item{grainsize}{integer determining minimum grain size for parallisation}
 

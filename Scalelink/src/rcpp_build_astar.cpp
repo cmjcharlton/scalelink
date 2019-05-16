@@ -114,9 +114,9 @@ struct Accumulate : public Worker
 //' @description
 //' Builds the A* matrix
 //' 
-//' @param foinew numeric \code{\link[base]{matrix}} representing the file of interest
+//' @param foinew \code{\link[base]{data.frame}} representing the file of interest
 //' 
-//' @param ldfnew numeric \code{\link[base]{matrix}} representing the linking data file
+//' @param ldfnew \code{\link[base]{data.frame}} representing the linking data file
 //'
 //' @param grainsize integer determining minimum grain size for parallisation
 //'
