@@ -232,7 +232,7 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 			}
 		}
 
-		Rcpp::Rcout << "Progress: |0";
+		Rcpp::Rcout << "Progress (%): |0";
 		std::flush(Rcpp::Rcout);
 		for (std::size_t i = 0u; i < nrecfoi; ++i) {
 			for (std::size_t j = 0u; j < nrecldf; ++j) {
