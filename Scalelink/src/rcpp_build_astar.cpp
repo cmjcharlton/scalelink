@@ -252,7 +252,7 @@ NumericMatrix buildAstar(DataFrame foinew, DataFrame ldfnew, int grainsize, bool
 						break;
 					case 'L':
 						foiexp[x] = foicols_lgl[lgl_count][i] != ldfcols_lgl[lgl_count][j];
-						++num_count;
+						++lgl_count;
 						break;
 					case 'S':
 						foiexp[x] = foicols_str[str_count][i] != ldfcols_str[str_count][j];
