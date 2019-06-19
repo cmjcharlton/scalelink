@@ -9,7 +9,7 @@ Author: Chris Charlton [aut, cre],
         Harvey Goldstein [aut]
 Maintainer: Chris Charlton <c.charlton@bristol.ac.uk>
 Depends:
-    R (>= 2.10.0)
+    R (>= 3.5.0)
 Description: Perform a 'probabilistic' linkage of two data files using a scaling procedure using the methods described in Goldstein, H., Harron, K. and Cortina-Borja, M. (2017) <doi:10.1002/sim.7287>.
 License: GPL (>= 2)
 Imports: Rcpp (>= 0.12.9), RcppParallel

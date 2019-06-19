@@ -7,6 +7,7 @@
     \item{\code{id}}{Record Identifier (not used for linking).}
     \item{\code{Day}}{Day of Week.}
     \item{\code{Month}}{Month of Year.}
+    \item{\code{Surname}}{Surname.}
     \item{\code{Year}}{Year.}
     \item{\code{Sex}}{Gender: with codes \code{1} Male and \code{2} Female.}
 }}
