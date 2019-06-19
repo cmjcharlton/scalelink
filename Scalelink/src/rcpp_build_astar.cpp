@@ -203,9 +203,9 @@ NumericMatrix buildAstar(NumericMatrix foinew, NumericMatrix ldfnew, int grainsi
 	}
 
 	for (std::size_t i = 0u; i < nident * 2; ++i) {
-		astar(i, i) = acc.accum(i, i) * (nident - 1.0) / (nident * nident) * 2.0;
+		astar(i, i) = acc.accum(i, i) * (nident - 1.0) / static_cast<double>(nident * nident) * 2.0;
 		for (std::size_t j = 0u; j < i; j++) {
-			astar(i, j) -= acc.accum(i, j) / (nident * nident) * 2.0;
+			astar(i, j) -= acc.accum(i, j) / static_cast<double>(nident * nident) * 2.0;
 		}
 	}
 

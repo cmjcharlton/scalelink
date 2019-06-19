@@ -1,8 +1,8 @@
 Package: Scalelink
 Type: Package
 Title: Create Scale Linkage Scores
-Version: 1.0
-Date: 2019-02-05
+Version: 1.0-1
+Date: 2019-06-19
 Authors@R: c(person("Chris", "Charlton", role=c("aut", "cre"), email="c.charlton@bristol.ac.uk"),
              person("Harvey", "Goldstein", role="aut", email="H.Goldstein@bristol.ac.uk"))
 Author: Chris Charlton [aut, cre],
