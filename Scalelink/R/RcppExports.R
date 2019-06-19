@@ -10,6 +10,10 @@
 #' 
 #' @param ldfnew \code{\link[base]{data.frame}} representing the linking data file
 #'
+#' @param ncats numeric \code{\link[base]{vector}} indicating the number of categories for each variable
+#'
+#' @param cutpoints numeric \code{\link[base]{list}} of \code{\link[base]{vector}} indicating the cutpoints to use for for each variable
+#'
 #' @param grainsize integer determining minimum grain size for parallisation
 #'
 #' @param debug Boolean indicating whether to output additional debugging information
@@ -21,7 +25,7 @@
 #' occurs can be specified via the nreport option. This is implemented in C++
 #' to provide a speed increase over implementing it directly in the R equivalent.
 #' @export
-buildAstar <- function(foinew, ldfnew, grainsize, debug) {
-    .Call('_Scalelink_buildAstar', PACKAGE = 'Scalelink', foinew, ldfnew, grainsize, debug)
+buildAstar <- function(foinew, ldfnew, ncats, cutpoints, grainsize, debug) {
+    .Call('_Scalelink_buildAstar', PACKAGE = 'Scalelink', foinew, ldfnew, ncats, cutpoints, grainsize, debug)
 }
 

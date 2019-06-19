@@ -4,12 +4,16 @@
 \alias{buildAstar}
 \title{buildAstar}
 \usage{
-buildAstar(foinew, ldfnew, grainsize, debug)
+buildAstar(foinew, ldfnew, ncats, cutpoints, grainsize, debug)
 }
 \arguments{
 \item{foinew}{\code{\link[base]{data.frame}} representing the file of interest}
 
 \item{ldfnew}{\code{\link[base]{data.frame}} representing the linking data file}
+
+\item{ncats}{numeric \code{\link[base]{vector}} indicating the number of categories for each variable}
+
+\item{cutpoints}{numeric \code{\link[base]{list}} of \code{\link[base]{vector}} indicating the cutpoints to use for for each variable}
 
 \item{grainsize}{integer determining minimum grain size for parallisation}
 

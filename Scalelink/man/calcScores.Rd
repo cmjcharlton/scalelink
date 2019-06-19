@@ -4,8 +4,8 @@
 \alias{calcScores}
 \title{Calculates linking scores for a file of interest and linkage data file.}
 \usage{
-calcScores(FOI, LDF, missing.value = NA, min.parallelblocksize = 1,
-  output.varnames = NULL, debug = FALSE)
+calcScores(FOI, LDF, cutpoints = list(), missing.value = NA,
+  min.parallelblocksize = 1, output.varnames = NULL, debug = FALSE)
 }
 \arguments{
 \item{FOI}{A \code{\link[base]{data.frame}} object, \code{\link[base]{matrix}} or 
@@ -15,6 +15,9 @@ only the variables of interest, and these must be in the same order as the LDF.}
 \item{LDF}{A \code{\link[base]{data.frame}} object, \code{\link[base]{matrix}} or 
 \code{\link[base]{vector}} to be used as the linkage data file. This must contain
 only the variables of interest, and these must be in the same order as the FOI.}
+
+\item{cutpoints}{A \code{\link[base]{list}} of \code{\link[base]{vector}} objects
+where they key is the variable name and the values contain the cutpoints to use}
 
 \item{missing.value}{Value used to represent missing data; Defaults to NA}
 
