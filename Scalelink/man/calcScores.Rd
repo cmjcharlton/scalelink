@@ -4,8 +4,14 @@
 \alias{calcScores}
 \title{Calculates linking scores for a file of interest and linkage data file.}
 \usage{
-calcScores(FOI, LDF, missing.value = NA, min.parallelblocksize = 1,
-  output.varnames = NULL, debug = FALSE)
+calcScores(
+  FOI,
+  LDF,
+  missing.value = NA,
+  min.parallelblocksize = 1,
+  output.varnames = NULL,
+  debug = FALSE
+)
 }
 \arguments{
 \item{FOI}{A \code{\link[base]{data.frame}} object, \code{\link[base]{matrix}} or 

@@ -49,8 +49,8 @@
 #' ##Then you can calculate scores as follows:
 #' FOI<-read.table("FOI")
 #' LDF<-read.table("LDF")
-#' IDENTIFIERS_FOI<-read.table('IDENTIFIERS_FOI')
-#' IDENTIFIERS_LDF<-read.table('IDENTIFIERS_LDF')
+#' IDENTIFIERS_FOI <- read.table('IDENTIFIERS_FOI')
+#' IDENTIFIERS_LDF <- read.table('IDENTIFIERS_LDF')
 #' result <- calcScores(FOI[, which(IDENTIFIERS_FOI == 1)], LDF[, which(IDENTIFIERS_LDF == 1)], 
 #' missing.value=-9.999e+029)
 #'
@@ -77,7 +77,6 @@
 #'
 #' @author Charlton, C.M.J., Goldstein H (2017) Centre for Multilevel Modelling, University of Bristol.
 #' 
-#' @docType package
 #' @name Scalelink
 #' @importFrom Rcpp evalCpp
 #' @importFrom RcppParallel RcppParallelLibs

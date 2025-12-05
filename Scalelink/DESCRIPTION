@@ -1,19 +1,19 @@
 Package: Scalelink
 Type: Package
 Title: Create Scale Linkage Scores
-Version: 1.0-1
-Date: 2019-06-19
+Version: 1.0-2
+Date: 2025-12-05
 Authors@R: c(person("Chris", "Charlton", role=c("aut", "cre"), email="c.charlton@bristol.ac.uk"),
              person("Harvey", "Goldstein", role="aut", email="H.Goldstein@bristol.ac.uk"))
 Author: Chris Charlton [aut, cre],
         Harvey Goldstein [aut]
 Maintainer: Chris Charlton <c.charlton@bristol.ac.uk>
 Depends:
-    R (>= 2.10.0)
+    R (>= 3.5.0)
 Description: Perform a 'probabilistic' linkage of two data files using a scaling procedure using the methods described in Goldstein, H., Harron, K. and Cortina-Borja, M. (2017) <doi:10.1002/sim.7287>.
 License: GPL (>= 2)
 Imports: Rcpp (>= 0.12.9), RcppParallel
 LinkingTo: Rcpp, RcppParallel
 SystemRequirements: GNU make
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.3.3
