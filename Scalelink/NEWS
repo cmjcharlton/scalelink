@@ -1,3 +1,7 @@
+Fri Dec 05 2025
+1. Changes
+   * Remove C++11 compilation specification, as required by CRAN
+
 Wed Jun 06 2019
 1. Changes
    * Fix rounding caused by integer divide
