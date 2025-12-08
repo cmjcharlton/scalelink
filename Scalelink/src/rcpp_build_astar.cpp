@@ -41,7 +41,6 @@ LongLongMatrix operator + (LongLongMatrix lhs, const LongLongMatrix & rhs) {
 	return lhs += rhs;
 }
 
-tbb::mutex m;
 bool dbg = false;
 
 struct Accumulate : public Worker
